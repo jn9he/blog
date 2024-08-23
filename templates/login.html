@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+</head>
+<body>
+
+    {% if error %}
+    <p><strong>Error:</strong> {{ error }}
+    {% endif %}
+
+    <form action="{{ url_for('login') }}" method="POST">
+        <input type="text" name="username">
+        <input type="text" name="password">
+        <button type="submit">Log In</button>
+    </form>
+
+    <h1><a href="{{ url_for('index') }}">back</a></h1>
+    
+</body>
+</html>

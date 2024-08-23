@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+   <title>Welcome to my Blog</title>
+
+   {% with messages = get_flashed_messages() %}
+      {% if messages %}
+         <ul>
+            {% for message in messages %}
+               <li>{{ message }}</li>
+            {% endfor %}
+         </ul>
+      {% endif %}
+   {% endwith %}
+
+   <h1><a href="{{ url_for('createPost') }}">create a post</a></h1>
+
+   <h1><a href="{{ url_for('listPosts') }}">view posts</a></h1>
+   <h1><a href="{{ url_for('listUsers') }}">view users</a></h1>
+
+   <h1><a href="{{ url_for('logout') }}">logout</a></h1>
+
+</html>
