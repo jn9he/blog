@@ -3,15 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashstyles.css') }}">
     <title>Feed</title>
 </head>
 <body>
-    {% for post in posts %}
-        <li>{{ post.dt }}</li>
-        <li>{{ post.title }}</li>
-        <li>{{ post.content }}</li>
-        <li>{{ post.user_id }} </li>
-    {% endfor %}
+    <div class="tiles">
+        {% if posts %}
+            {% for post in posts %}
+                <article class="tile">
+                    <div class="tile-header">
+                        <i class="ph-lightning-light"></i>
+                        <h3>
+                            <span>{{ post.dt }}</span>
+                            <span>{{ post.title }}</span>
+                            <span>{{ post.content }}</span>
+                            <span>{{ post.user_id }}</span>
+                        </h3>
+                    </div>
+                    <a href="#">
+                        <span>View</span>
+                        <span class="icon-button">
+                            <i class="ph-caret-right-bold"></i>
+                        </span>
+                    </a>
+                </article>
+            {% endfor %}
+        {% endif %}
+    </div>
 
     <a href="{{url_for('homepage') }}">back</a>
 </body>

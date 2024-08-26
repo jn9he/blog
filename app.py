@@ -15,20 +15,24 @@ app.secret_key = 'super_secret_3'
 @app.route('/')
 def index():
     if 'username' in session:
-        return render_template('homepage.html')
+        return render_template('dashboard.html')
     else:
-        return render_template('index.html')
+        return render_template('login.html')
 
 @app.route('/homepage')
 def homepage():
     return render_template('homepage.html')
+
+@app.route('/dashboard')
+def dashboard():
+    return render_template('dashboard.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     err = None
     if 'username' in session:
             flash('User already logged in.')
-            return render_template('homepage.html')
+            return render_template('dashboard.html')
     
     if request.method == 'POST':
         user = User.query.filter_by(username=request.form['username']).first()
@@ -41,12 +45,12 @@ def login():
             user.onlineStatus = True
             db.session.commit()
             flash('Welcome' + session['username'])
-            return render_template('homepage.html')
+            return render_template('dashboard.html')
         
         elif not check_password_hash(user.passHash, request.form['password']):
             err = "Incorrect password."
             return render_template('login.html', error=err)
-    return render_template('login.html', error=err)
+    return render_template('dashboard.html', error=err)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -55,7 +59,8 @@ def logout():
         user.onlineStatus = False
         db.session.commit()
         session.clear()
-        return render_template('index.html', error='Logged out successfully')
+        return render_template('login.html', error='Logged out successfully')
+    return render_template('login.html')
     
 @app.route('/createUser')
 def createUser():
@@ -127,18 +132,16 @@ def addPost():
         return render_template('homepage.html')
 
 @app.route('/listPosts')
-def listPosts():
+def listPosts(user=None):
     posts = Post.query.all()
+    if user is not None:
+        posts = Post.query.filter_by(username=user)
     if posts is None:
         flash('There are no posts.')
         return render_template('homepage.html')
     else:
         return render_template('listPosts.html', posts=posts)
     
-@app.route('/myProfile')
-def myProfile():
-    return
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
@@ -159,5 +162,9 @@ class Comment(db.Model):
     content = db.Column(db.String(150), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
+class FriendsList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    friend_id = db.Column(db.Integer, nullable=False)
+    
 if __name__ == "__Main__":
     app.start(debug=True)

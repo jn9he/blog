@@ -3,32 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
     <title>Create Account</title>
 </head>
 <body>
 
     {% if message %}
-        <p><strong>{{ message }}</strong> 
+        <p>{{ message }}</p>
     {% endif %}
 
-    <form action="{{ url_for('addUser') }}" method = "post">
-
-        Enter a username
-        <br>
-        <input type="text" name="username"> 
-        <br>
-        Password
-        <br>
-        <input type="text" name="password">
-        <br>
-        Confirm Password
-        <br>
-        <input type="text" name="confirmp"> 
-        <br>
-        <input type="submit">
-
-    </form>
-
-    <a href="{{url_for('index') }}">back</a>
+    <form class='form' action="{{ url_for('addUser') }}" method="POST">
+        <div class="flex-row">
+          <input name="username" class='lf--input' placeholder='Username' type='text'>
+        </div>
+        <div class="flex-row">
+          <input name="password" class='lf--input' placeholder='Password' type='password'>
+        </div>
+        <div class="flex-row">
+            <input name="confirmp" class='lf--input' placeholder='Password' type='password'>
+          </div>
+        <input class='lf--submit' type='submit' value='Register'>
+      </form>
+      <a class='lf--forgot' href='{{ url_for('login') }}'>Login Page</a>
 </body>
 </html>

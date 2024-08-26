@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
 </head>
 <body>
 
     {% if error %}
-    <p><strong>Error:</strong> {{ error }}
+        <p>{{ error }}</p>
     {% endif %}
 
-    <form action="{{ url_for('login') }}" method="POST">
-        <input type="text" name="username">
-        <input type="text" name="password">
-        <button type="submit">Log In</button>
-    </form>
-
-    <h1><a href="{{ url_for('index') }}">back</a></h1>
+    <form class='form' action="{{ url_for('login') }}" method="POST">
+        <div class="flex-row">
+          <input name="username" class='lf--input' placeholder='Username' type='text'>
+        </div>
+        <div class="flex-row">
+          <input name="password" class='lf--input' placeholder='Password' type='password'>
+        </div>
+        <input class='lf--submit' type='submit' value='Login'>
+      </form>
+      <a class='lf--forgot' href='{{ url_for('createUser') }}'>Create an Account</a>
     
 </body>
 </html>
