@@ -7,6 +7,8 @@
     <title>Feed</title>
 </head>
 <body>
+    <div>{% include 'navbar.html' %}</div>
+   
     <div class="tiles">
         {% if posts %}
             {% for post in posts %}
@@ -14,17 +16,12 @@
                     <div class="tile-header">
                         <i class="ph-lightning-light"></i>
                         <h3>
-                            <span>{{ post.dt }}</span>
+                            <span> {{ post.user.username }} </span>
                             <span>{{ post.title }}</span>
-                            <span>{{ post.content }}</span>
-                            <span>{{ post.user_id }}</span>
                         </h3>
                     </div>
-                    <a href="#">
+                    <a href="{{ url_for('viewPost', post_id=post.id) }}">
                         <span>View</span>
-                        <span class="icon-button">
-                            <i class="ph-caret-right-bold"></i>
-                        </span>
                     </a>
                 </article>
             {% endfor %}

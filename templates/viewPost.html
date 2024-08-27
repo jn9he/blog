@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashstyles.css') }}">
+    <title>Yap ID#{{ post.id }}</title>
+</head>
+<body>
+
+    <article class="tile">
+        <div class="tile-header">
+            <i class="ph-lightning-light"></i>
+            <h3>
+                <span>{{ post.dt.strftime('%m/%d/%y %H:%M:%S') }}</span>
+                <span>{{ post.title }}</span>
+                <span>{{ post.content }}</span>
+            </h3>
+        </div>
+    </article>
+
+
+    <form action="{{ url_for('addComment', postID=post.id) }}" method="post">
+        <div class="input-container">
+            <input type="text" name="content" placeholder="Add Comment">
+            <input type="submit" placeholder="Send">
+        </div>
+    </div>
+
+    {% if post.comments %}
+        {% for comment in post.comments %}
+            <div> {{ comment.content }} </div> 
+        {% endfor %}
+    {% endif %}
+    
+</body>
+</html>

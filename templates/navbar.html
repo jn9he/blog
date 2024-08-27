@@ -1,0 +1,48 @@
+<div class="app-body-navigation">
+    
+    <nav class="navigation">
+        <div class="logo">
+            <span class="logo-icon">
+                <img src="https://assets.codepen.io/285131/almeria-logo.svg" />
+            </span>
+            
+            <h1 class="logo-title">
+                <span>Yap</span>
+                <span>Sesh</span>
+            </h1>
+        </div>
+        <a href="#">
+            <i class="ph-user-focus"></i>
+            <span>My Profile</span>
+        </a>
+        <a href="{{ url_for('listUsers') }}">
+            <i class="ph-users-three"></i>
+            <span>Friends List</span>
+        </a>
+        <a href="{{ url_for('listPosts') }}">
+            <i class="ph-swap"></i>
+            <span>Yap Vault</span>
+        </a>
+        <a href="{{ url_for('createPost') }}">
+            <i class="ph-note-pencil"></i>
+            <span>New Card</span>
+        </a>
+        <a href="#">
+            <i class="ph-globe"></i>
+            <span>For You</span>
+        </a>
+        <a href="{{ url_for('logout') }}">
+            <i class="ph-sign-out"></i>
+            <span>Log Out</span>
+        </a>
+    </nav>
+    <footer class="footer">
+        <div class="user-profile">
+            <span>{{ session.username }}</span>
+        </div>
+        <div>
+            YapSesh Inc ©<br />
+            All Rights Reserved 2024
+        </div>
+    </footer>
+</div>

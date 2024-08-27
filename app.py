@@ -50,20 +50,22 @@ def login():
         elif not check_password_hash(user.passHash, request.form['password']):
             err = "Incorrect password."
             return render_template('login.html', error=err)
-    return render_template('dashboard.html', error=err)
+    return render_template('login.html', error=err)
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
     if 'username' in session:
         user = User.query.filter_by(username=session['username']).first()
-        user.onlineStatus = False
-        db.session.commit()
-        session.clear()
-        return render_template('login.html', error='Logged out successfully')
+        if user:
+            user.onlineStatus = False
+    db.session.commit()
+    session.clear()
     return render_template('login.html')
     
 @app.route('/createUser')
 def createUser():
+    if 'username' in session:
+        return render_template('dashboard.html')
     return render_template('createUser.html')
 
 @app.route('/deleteUser')
@@ -91,7 +93,8 @@ def addUser():
                 new = User(username=user, passHash=pw)
                 db.session.add(new)
                 db.session.commit()
-                return render_template('index.html', error='User Created Successfully')
+
+                return render_template('login.html', error="Account created successfully.")
             except IntegrityError:
                 db.session.rollback()
                 msg = "User already exists."
@@ -119,17 +122,35 @@ def createPost():
 def deletePost():
     return
 
+@app.route('/viewPost/<int:post_id>', methods=['GET', 'POST'])
+def viewPost(post_id):
+    thisPost = Post.query.filter_by(id=post_id).first()
+    if thisPost is None:
+        return render_template('homepage.html', message="Post does not exist.")
+    return render_template('viewPost.html', post=thisPost)
+
 @app.route('/addPost', methods=['GET', 'POST'])
 def addPost():
     if request.method == 'POST':
-        tit = request.form['title']
-        cont = request.form['content']
+        title = request.form['title']
+        content = request.form['content']
         testID = User.query.filter_by(username=session['username']).first().id
-        newPost = Post(title=tit, content=cont, user_id=testID)
+        newPost = Post(title=title, content=content, user_id=testID)
         db.session.add(newPost)
         db.session.commit()
         flash('Post Added')
         return render_template('homepage.html')
+
+@app.route('/addComment/<int:postID>', methods=['GET', 'POST'])
+def addComment(postID):
+    thisPost=Post.query.filter_by(id=postID).first()
+    if request.method == 'POST':
+        content = request.form['content']
+        newComment=Comment(content=content, post_id=postID)
+        db.session.add(newComment)
+        db.session.commit()
+
+        return render_template('viewPost.html', post=thisPost)
 
 @app.route('/listPosts')
 def listPosts(user=None):
@@ -141,7 +162,13 @@ def listPosts(user=None):
         return render_template('homepage.html')
     else:
         return render_template('listPosts.html', posts=posts)
-    
+
+# @app.route('/listComments')
+# def listComments(postID):
+#     commentTable = Comment.query.filter_by(post_id=postID)
+#     if commentTable is None:
+#         return render_template('dashboard.html')
+#     render_template('listComments.html', comments=commentTable)
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
@@ -155,6 +182,7 @@ class Post(db.Model):
     title = db.Column(db.String(100))
     content = db.Column(db.Text)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    comments = db.relationship('Comment', backref='post')
 
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)

@@ -25,6 +25,7 @@ body {
   color: var(--c-text-primary);
   display: flex;
   justify-content: center;
+  overflow: hidden;
 }
 
 *,
@@ -54,18 +55,16 @@ a {
   min-height: 80vh;
   width: 100%;
   background-color: var(--c-gray-800);
-  padding: 2vw 4vw 6vw;
+  padding: 1vw 4vw 6vw;
   display: flex;
   flex-direction: column;
 }
 
 .app-header {
-  display: grid;
-  grid-template-columns: minmax(-webkit-min-content, 175px) minmax(-webkit-max-content, 1fr) minmax(-webkit-max-content, 400px);
-  grid-template-columns: minmax(min-content, 175px) minmax(max-content, 1fr) minmax(max-content, 400px);
-  -moz-column-gap: 4rem;
-       column-gap: 4rem;
-  align-items: flex-end;
+  width: auto;
+  align-self: flex-start;
+  border-bottom: 1px solid var(--c-gray-600);
+  margin-bottom: 2rem;
 }
 @media (max-width: 1200px) {
   .app-header {
@@ -85,6 +84,7 @@ a {
 .app-header-actions {
   display: flex;
   align-items: center;
+  padding-bottom: 10%;
 }
 @media (max-width: 1200px) {
   .app-header-actions {
@@ -113,12 +113,15 @@ a {
 
 .app-body {
   height: 100%;
-  display: grid;
+  display: flex;
+  flex: 1;
+  width: 100%;
+  /* display: grid;
   grid-template-columns: minmax(-webkit-min-content, 175px) minmax(-webkit-max-content, 1fr) minmax(-webkit-min-content, 400px);
   grid-template-columns: minmax(min-content, 175px) minmax(max-content, 1fr) minmax(min-content, 400px);
   -moz-column-gap: 4rem;
-       column-gap: 4rem;
-  padding-top: 2.5rem;
+       column-gap: 4rem; */
+  padding-top: 0;
 }
 
 @media (max-width: 1200px) {
@@ -128,6 +131,17 @@ a {
   .app-body > * {
     margin-bottom: 3.5rem;
   }
+}
+
+.app-body-main-content {
+  flex: 1;
+  margin-right: 4rem;
+  margin-left: 4rem;
+
+}
+
+.app-body-sidebar {
+  width: 400px;
 }
 
 .app-body-navigation {
@@ -142,7 +156,8 @@ a {
 }
 
 .footer {
-  margin-top: auto;
+  margin-top: 100%;
+  padding-top: 32vh;
 }
 .footer h1 {
   font-size: 1.5rem;
@@ -156,7 +171,7 @@ a {
 }
 .footer div {
   border-top: 1px solid var(--c-gray-600);
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   padding-top: 1rem;
   font-size: 0.75rem;
   color: var(--c-text-tertiary);
@@ -165,14 +180,8 @@ a {
 .logo {
   display: flex;
   align-items: center;
+  padding-top: 0;
   padding-bottom: 1rem;
-  padding-top: 1rem;
-  border-bottom: 1px solid var(--c-gray-600);
-}
-@media (max-width: 1200px) {
-  .logo {
-    border-bottom: 0;
-  }
 }
 
 .logo-icon {
@@ -186,7 +195,6 @@ a {
 .logo-title {
   display: flex;
   flex-direction: column;
-  line-height: 1.25;
   margin-left: 0.75rem;
 }
 .logo-title span:first-child {
@@ -217,7 +225,7 @@ a {
   flex-shrink: 0;
 }
 .navigation a + a {
-  margin-top: 1.25rem;
+  margin-top: 10%;
 }
 .navigation a:hover, .navigation a:focus {
   transform: translateX(4px);
@@ -252,32 +260,7 @@ a {
   color: var(--c-text-tertiary);
   transition: 0.25s ease;
 }
-.user-profile:hover, .user-profile:focus {
-  color: var(--c-text-primary);
-}
-.user-profile:hover span:last-child, .user-profile:focus span:last-child {
-  box-shadow: 0 0 0 4px var(--c-gray-800), 0 0 0 5px var(--c-text-tertiary);
-}
-.user-profile span:first-child {
-  display: flex;
-  font-size: 1.125rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--c-gray-600);
-  font-weight: 300;
-}
-.user-profile span:last-child {
-  transition: 0.25s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-left: 1.5rem;
-  flex-shrink: 0;
-}
+
 
 .icon-button {
   width: 32px;
@@ -753,7 +736,7 @@ a {
 .faq div input {
   border: 0;
   background-color: transparent;
-  padding: 0.25em 0;
+  padding: 0.25em 0.25em;
   width: 100%;
 }
 
