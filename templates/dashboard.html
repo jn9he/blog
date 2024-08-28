@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='dashstyles.css') }}">
-    <link rel="stylesheet" href="C:\cs\blog\static\dashstyles.css">
+    <!-- <link rel="stylesheet" href="C:\cs\blog\static\dashstyles.css"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Dashboard</title>
 </head>
@@ -11,65 +11,18 @@
         <div>{{ message }}</div>
     {% endif %}
     <div class="app">
-        
-        <div class="app-body">
-            <!-- {% include 'navbar.html' %} -->
+        <div class="app-body"> 
+            {% include 'navbar.html' %}
             <div class="app-body-main-content">
                 <section class="service-section">
                     <div class="tiles">
-                        <article class="tile">
-                            <div class="tile-header">
-                                <i class="ph-lightning-light"></i>
-                                <h3>
-                                    <span>Electricity</span>
-                                    <span>UrkEnergo LTD.</span>
-                                </h3>
-                            </div>
-                            <a href="#">
-                                <span>Open Post</span>
-                                <span class="icon-button">
-                                    <i class="ph-caret-right-bold"></i>
-                                </span>
-                            </a>
-                        </article>
-                        <article class="tile">
-                            <div class="tile-header">
-                                <i class="ph-fire-simple-light"></i>
-                                <h3>
-                                    <span>Heating Gas</span>
-                                    <span>Gazprom UA</span>
-                                </h3>
-                            </div>
-                            <a href="#">
-                                <span>Go to service</span>
-                                <span class="icon-button">
-                                    <i class="ph-caret-right-bold"></i>
-                                </span>
-                            </a>
-                        </article>
-                        <article class="tile">
-                            <div class="tile-header">
-                                <i class="ph-file-light"></i>
-                                <h3>
-                                    <span>Tax online</span>
-                                    <span>Kharkov 62 str.</span>
-                                </h3>
-                            </div>
-                            <a href="#">
-                                <span>Go to service</span>
-                                <span class="icon-button">
-                                    <i class="ph-caret-right-bold"></i>
-                                </span>
-                            </a>
-                        </article>
+                        
                     </div>
                 </section>
             </div>
-            <!-- {% include 'friendsList.html' %} -->
+            {% include 'friendsList.html' %}
         </div>
-    
-    </div> 
-    
+    </div>
     <script src='https://unpkg.com/phosphor-icons'></script><script  src="./script.js"></script>
 </body>
 </html>

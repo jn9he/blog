@@ -3,6 +3,7 @@ from flask_sqlalchemy import *
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import random, string
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///students.sqlite3'
@@ -25,6 +26,8 @@ def homepage():
 
 @app.route('/dashboard')
 def dashboard():
+    if 'username' not in session:
+        return render_template('login.html')
     return render_template('dashboard.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -91,6 +94,11 @@ def addUser():
                 user = request.form['username']
                 pw = generate_password_hash(request.form['password'])
                 new = User(username=user, passHash=pw)
+
+                test_code=generate_user_code()
+                while not validate_user_code(test_code):
+                    test_code=generate_user_code()
+                new.user_code=test_code
                 db.session.add(new)
                 db.session.commit()
 
@@ -156,24 +164,26 @@ def addComment(postID):
 def listPosts(user=None):
     posts = Post.query.all()
     if user is not None:
-        posts = Post.query.filter_by(username=user)
+        posts = Post.query.filter_by(username=user).all()
     if posts is None:
         flash('There are no posts.')
         return render_template('homepage.html')
     else:
         return render_template('listPosts.html', posts=posts)
 
-# @app.route('/listComments')
-# def listComments(postID):
-#     commentTable = Comment.query.filter_by(post_id=postID)
-#     if commentTable is None:
-#         return render_template('dashboard.html')
-#     render_template('listComments.html', comments=commentTable)
+@app.route('/profile/<string:username>', methods=['GET', 'POST'])
+def profile(username):
+    user = User.query.filter_by(username=username).first()
+    if not user:
+        return render_template('homepage.html')
+    return render_template('profile.html', posts=Post.query.filter_by(user_id=user.id))
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), unique=True, nullable=False)
     passHash = db.Column(db.String, nullable=False)
     onlineStatus = db.Column(db.Boolean, default=False)
+    user_code = db.Column(db.String, unique=True, default=None)
     posts = db.relationship('Post', backref='user')
 
 class Post(db.Model):
@@ -190,9 +200,21 @@ class Comment(db.Model):
     content = db.Column(db.String(150), nullable=False)
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
 
-class FriendsList(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    friend_id = db.Column(db.Integer, nullable=False)
+# class FriendsList(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     userID = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+#     friend_obj = db.Column(db.User)
     
+
+def generate_user_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
+
+def validate_user_code(testCode):
+    checkUser = User.query.filter_by(user_code=testCode).first()
+    if not checkUser:
+        return True
+    return False
+
+
 if __name__ == "__Main__":
     app.start(debug=True)

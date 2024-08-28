@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='dashstyles.css') }}">
-    <title>Feed</title>
+    <title>My Profile</title>
 </head>
 <body>
+
     <div class="app">
         <div class="app-body">
             {% include 'navbar.html' %}
@@ -15,6 +16,7 @@
                     <div class="tiles">
                         {% if posts %}
                             {% for post in posts %}
+                        
                                 <article class="tile">
                                     <div class="tile-header">
                                         <i class="ph-lightning-light"></i>
@@ -31,7 +33,7 @@
                         {% endif %}
                     </div>
                 </section>
-            </div> 
+            </div>
             {% include 'friendsList.html' %}
         </div>
     </div>
