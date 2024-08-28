@@ -1,1 +1,3 @@
-A Python Flask SQLAlchemy Blog deployed on 
+A Social Media Web App written from scratch using Flask, Flask-SQLAlchemy, HTML, and CSS.
+
+#SELFYAP
